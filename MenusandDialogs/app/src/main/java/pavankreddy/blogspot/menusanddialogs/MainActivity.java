@@ -64,4 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        /*super.onBackPressed();*/
+        /*Toast.makeText(this, "You cannot close the app by clicking on back button",
+                Toast.LENGTH_SHORT).show();*/
+        showAlert();
+    }
 }
