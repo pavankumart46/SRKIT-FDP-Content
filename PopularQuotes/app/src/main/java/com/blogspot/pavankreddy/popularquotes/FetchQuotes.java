@@ -1,7 +1,9 @@
 package com.blogspot.pavankreddy.popularquotes;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -16,6 +18,13 @@ public class FetchQuotes extends AsyncTask<Void,Void,String>
 
     private static final String URL_LINK
             = "https://quote-garden.herokuapp.com/quotes/all";
+    private Context context;
+    private TextView textView;
+
+    public FetchQuotes(Context context, TextView textView) {
+        this.context = context;
+        this.textView = textView;
+    }
 
     @Override
     protected String doInBackground(Void... voids) {
@@ -47,6 +56,6 @@ public class FetchQuotes extends AsyncTask<Void,Void,String>
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
+        textView.setText(s);
     }
 }

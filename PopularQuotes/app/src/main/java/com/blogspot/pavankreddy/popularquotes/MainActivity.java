@@ -16,6 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void fetchQuotes(View view)
     {
-
+        new FetchQuotes(this,results).execute();
     }
 }
