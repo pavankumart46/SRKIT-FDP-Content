@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--We want to receive input-->
+    <EditText
+        android:id="@+id/address"
+        android:hint="Enter The address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:onClick="openMaps"
+        android:textStyle="bold"
+        android:textColor="#FFF"
+        android:background="#053A85"
+        android:drawableLeft="@drawable/location"
+        android:text="OPEN MAPS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--This is to open web url-->
+    <EditText
+        android:id="@+id/eturl"
+        android:hint="Enter a URL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:onClick="openBrowser"
+        android:textStyle="bold"
+        android:textColor="#FFF"
+        android:background="#053A85"
+        android:drawableLeft="@drawable/urlicon"
+        android:text="Open URL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--Let's Dail a Friend-->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/phone"
+            android:inputType="number"
+            android:hint="Enter Phone Number"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:onClick="dialFriend"
+            android:src="@drawable/call_btn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>
