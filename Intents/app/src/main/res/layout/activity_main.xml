@@ -65,4 +65,14 @@
 
     </LinearLayout>
 
+    <Button
+        android:onClick="nextActivity"
+        android:drawableRight="@drawable/next"
+        android:textStyle="bold"
+        android:textColor="#FFF"
+        android:background="#051E57"
+        android:text="Next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

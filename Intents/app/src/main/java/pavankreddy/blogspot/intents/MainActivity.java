@@ -59,4 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(i);
     }
+
+    public void nextActivity(View view)
+    {
+        // Create an Explicit Intent
+        Intent i =
+                new Intent(MainActivity.this,SecondActivity.class);
+        startActivity(i);
+    }
 }
