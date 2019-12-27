@@ -10,9 +10,21 @@
 
     <Button
         android:onClick="fetchQuotes"
-        android:text="Fetch Quotes"
+        android:text="Fetch Cat Facts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--This progress bar should not be visible to the
+    user as soon as the app is launched
+    it should become visible when he clicks on the
+    button
+    We should hide the progress bar once data fetching
+    is done-->
 
     <ScrollView
         android:layout_width="match_parent"

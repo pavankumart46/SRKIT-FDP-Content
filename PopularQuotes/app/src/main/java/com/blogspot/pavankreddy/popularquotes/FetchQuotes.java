@@ -3,7 +3,13 @@ package com.blogspot.pavankreddy.popularquotes;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -17,13 +23,15 @@ public class FetchQuotes extends AsyncTask<Void,Void,String>
 {
 
     private static final String URL_LINK
-            = "https://quote-garden.herokuapp.com/quotes/all";
+            = "https://cat-fact.herokuapp.com/facts";
     private Context context;
     private TextView textView;
+    private ProgressBar progressBar;
 
-    public FetchQuotes(Context context, TextView textView) {
+    public FetchQuotes(Context context, TextView textView, ProgressBar progressBar) {
         this.context = context;
         this.textView = textView;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -56,6 +64,21 @@ public class FetchQuotes extends AsyncTask<Void,Void,String>
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        textView.setText(s);
+        progressBar.setVisibility(View.GONE);
+        /*textView.setText(s);*/
+        try {
+            JSONObject root = new JSONObject(s);
+            JSONArray allfacts = root.getJSONArray("all");
+            /* To Fetch only first objects content
+            JSONObject first_object = allfacts.getJSONObject(0);
+            textView.setText(first_object.getString("text"));*/
+            for(int i=0; i<allfacts.length();i++){
+                JSONObject data = allfacts.getJSONObject(i);
+                String fact = data.getString("text");
+                textView.append(fact+"\n\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
