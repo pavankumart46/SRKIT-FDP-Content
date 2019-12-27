@@ -2,7 +2,10 @@ package com.blogspot.pavankreddy.moviesinfo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setUpData();
         recyclerView = findViewById(R.id.recyclerview);
+        // Set the adapter
+        recyclerView.setAdapter(new MovieAdapter());
+        // set the layout manager
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setUpData() {
@@ -48,14 +55,20 @@ public class MainActivity extends AppCompatActivity {
             return new MovieViewHolder(v);
         }
 
+        /*the following method updates the data on the views based on the
+        * position*/
         @Override
         public void onBindViewHolder(MovieViewHolder holder, int position) {
-
+            holder.p.setImageResource(images[position]);
+            holder.mn.setText(movies[position]);
+            holder.an.setText(actors[position]);
         }
 
+        /*This method tells the recyclerview about how many items are
+        * there in total*/
         @Override
         public int getItemCount() {
-            return 0;
+            return movies.length;
         }
     }
 
