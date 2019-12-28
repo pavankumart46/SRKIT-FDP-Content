@@ -8,9 +8,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:onClick="sendNotification"
-        android:text="Send Notification"
+    <ToggleButton
+        android:id="@+id/toggle"
+        android:textOn="Alarm On"
+        android:textOff="Alarm Off"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

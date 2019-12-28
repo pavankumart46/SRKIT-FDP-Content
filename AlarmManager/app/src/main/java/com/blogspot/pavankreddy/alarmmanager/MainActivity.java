@@ -1,62 +1,79 @@
 package com.blogspot.pavankreddy.alarmmanager;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
+    ToggleButton toggleButton;
+    AlarmManager am;
+    SharedPreferences sp;
+    boolean flag;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("STATUS",flag);
+        editor.apply();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toggleButton = findViewById(R.id.toggle);
+        am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        sp = getSharedPreferences("mypref",MODE_PRIVATE);
+       /*Target is to save the state of the alarm button - on/off */
+       if(sp!=null){
+           toggleButton.setChecked(sp.getBoolean("STATUS",false));
+       }
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            Intent intent = new Intent(MainActivity.this,
+                    AlarmReceiver.class);
+            PendingIntent pi = PendingIntent.getBroadcast(MainActivity.this,
+                    23,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton,
+                                         boolean b) {
+                if(b)
+                {
+                    flag = b;
+                    //We can turn the alarm on
+                    long triggertime = SystemClock.elapsedRealtime();
+                    long intervalTime = 1*60*1000;
+                    am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            triggertime,
+                            intervalTime,
+                            pi);
+                }
+                else
+                {
+                    flag = b;
+                    //we can turn the alarm off
+                    am.cancel(pi);
+                }
+            }
+        });
     }
 
-    public void sendNotification(View view)
-    {
-        /*This class is responsible for issuing a notification and managing it
-        * we can also cancel a notification using this object*/
-        NotificationManager nm =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        /*Creating a notification channel - for android 8.0(oreo) and above
-        * devices*/
-        String CHANNEL_ID = "mychannel";
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            NotificationChannel nc =
-                    new NotificationChannel(CHANNEL_ID,"SRKIT FDP CHANNEL",
-                            NotificationManager.IMPORTANCE_HIGH);
-            nc.enableLights(true);
-            nc.enableVibration(true);
-            nc.setDescription("MY CHANNEL - MY WISH");
-            nm.createNotificationChannel(nc);
-        }
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this,CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.umbrella);
-        builder.setContentTitle("STAND UP AND WALK!");
-        builder.setContentText("Walking every one hour is healthy!");
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        builder.setAutoCancel(true);
-        /*PendingIntent is the description of operation that
-        * is to be performed outside the app*/
-        Intent intent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this,12,
-                        intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.a);
-        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap));
-        builder.addAction(R.drawable.umbrella,"YES",pendingIntent);
-        builder.addAction(R.drawable.umbrella,"NO",pendingIntent);
-
-        nm.notify(42,builder.build());
-    }
 }
